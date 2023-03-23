@@ -1,47 +1,63 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  import About from "./About.svelte";
+  import Results from "./Results.svelte";
+
+  let query = "";
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <a
+    href="/"
+    on:click={(e) => {
+      e.preventDefault();
+      query = "";
+    }}
+  >
+    <h1 class="logo">
+      <span class="logo--open">Open</span>Besluitvorming
+    </h1>
+  </a>
+  <input
+    type="text"
+    name="search"
+    autocomplete="off"
+    placeholder="Zoek door 300+ gemeenten..."
+    class="SearchBar"
+    bind:value={query}
+  />
+  {#if query.length > 0}
+    <Results {query} />
+  {:else}
+    <About />
+  {/if}
 </main>
 
 <style>
+  main {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
   .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+    color: var(--blue);
+    margin-bottom: 1rem;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+  .logo--open {
+    color: var(--bluedark);
   }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
+  .SearchBar {
+    box-shadow: var(--box-shadow);
+    flex: 1;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--bg3);
+    border-radius: var(--border-radius);
+    background-color: var(--bg);
   }
-  .read-the-docs {
-    color: #888;
+  .SearchBar::-webkit-input-placeholder {
+    color: var(--bg4);
   }
 </style>

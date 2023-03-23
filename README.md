@@ -9,11 +9,11 @@ Search engine designed to process large amounts of PDF files and make them fully
 # Clone template.env and fill with your S3 credentials
 cp template.env .env
 # Run QuickWit on docker
-docker run --rm --env-file=.env -v $(pwd)/qwdata:/quickwit/qwdata -p 127.0.0.1:7280:7280 quickwit/quickwit run
+docker run --rm --platform linux/amd64 --env-file=.env -v $(pwd)/qwdata:/quickwit/qwdata -p 127.0.0.1:7280:7280 quickwit/quickwit run
 # Create an index
-docker run --rm --env-file=.env -v $(pwd)/qwdata:/quickwit/qwdata -v $(pwd)/stackoverflow-index-config.yaml:/quickwit/index-config.yaml quickwit/quickwit index create --index-config index-config.yaml
+curl -XPOST http://127.0.0.1:7280/api/v1/indexes --header "content-type: application/yaml" --data-binary @./stackoverflow-index-config.yaml
 # Index the first 10_000 Stackoverflow posts articles.
-docker run --rm --env-file=.env -v $(pwd)/qwdata:/quickwit/qwdata -v $(pwd)/stackoverflow.posts.transformed-10000.json:/quickwit/docs.json quickwit/quickwit index ingest --index stackoverflow --input-path docs.json
+curl -XPOST http://127.0.0.1:7280/api/v1/stackoverflow/ingest --data-binary @stackoverflow.posts.transformed-10000.json
 # Visit http://localhost:7280/ui/search?query=*&index_id=stackoverflow&max_hits=10&sort_by_field=-creationDate
 ```
 
@@ -26,3 +26,12 @@ docker run --rm --env-file=.env -v $(pwd)/qwdata:/quickwit/qwdata -v $(pwd)/stac
 - [ ] Front-end (Svelte)
 - [ ] PDF to text conversion
 - [ ] Importers for popular meeting tools
+
+
+## Setup using kubernetes + helm
+
+```sh
+helm repo add quickwit https://helm.quickwit.io
+helm repo update quickwit
+helm install lastig quickwit/quickwit -f helm-values.yaml
+```

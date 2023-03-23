@@ -1,0 +1,13 @@
+image:
+  tag: v0.4.0
+
+config:
+  default_index_root_uri: s3://lastig/hdfs
+
+metastore:
+  replicaCount: 1
+
+  extraEnv:
+    QW_METASTORE_URI: s3://lastig/hdf
+    AWS_ACCESS_KEY_ID: 005f92e9f26705f0000000001
+    AWS_SECRET_ACCESS_KEY: K005lEF3x+o1Evp+hVYU4V3AtRda5u8

@@ -1,13 +1,16 @@
 #
 # Index config file for stackoverflow dataset.
 #
-version: 0.4
+version: 0.5
 
 index_id: stackoverflow
-index_uri: "s3://lastig/hdfs"
+index_uri: "s3://openbesluitvorming/quickwit"
 
 doc_mapping:
   mode: dynamic
 
 indexing_settings:
   commit_timeout_secs: 10
+
+# search_settings:
+#   default_search_fields: [title, body]
