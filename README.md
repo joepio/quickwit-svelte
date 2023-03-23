@@ -2,10 +2,11 @@
 
 Search engine designed to process large amounts of PDF files and make them fully searchable.
 
-## Setup
+## Setup using S3 storage
 
 ```sh
-# Clone template.env and fill with S3 credentials
+# Create an S3 bucket, e.g. on BackBlaze
+# Clone template.env and fill with your S3 credentials
 cp template.env .env
 # Run QuickWit on docker
 docker run --rm --env-file=.env -v $(pwd)/qwdata:/quickwit/qwdata -p 127.0.0.1:7280:7280 quickwit/quickwit run
