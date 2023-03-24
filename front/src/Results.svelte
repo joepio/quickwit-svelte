@@ -1,14 +1,11 @@
 <script lang="ts">
   import Hit from "./Hit.svelte";
   import type { Hit as HitType } from "./types";
-  import { Client } from "./lib/qw/client";
+  import { query, client } from "./stores";
 
-  export let query = "";
-  let qw = new Client("http://localhost:7280");
-
-  $: results = qw.search<HitType>({
+  $: results = $client.search<HitType>({
     maxHits: 200,
-    query: `body:"${query}" title:"${query}"`,
+    query: `body:"${$query}" title:"${$query}"`,
     indexId: "stackoverflow",
   });
 </script>
@@ -21,7 +18,7 @@
   </p>
   <div class="results">
     {#each res.hits as hit}
-      <Hit {hit} {query} />
+      <Hit {hit} />
     {/each}
   </div>
 {:catch error}

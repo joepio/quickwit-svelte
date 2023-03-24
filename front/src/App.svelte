@@ -2,7 +2,7 @@
   import About from "./About.svelte";
   import Results from "./Results.svelte";
 
-  let query = "";
+  import { query } from "./stores";
 </script>
 
 <main>
@@ -11,7 +11,7 @@
     href="/"
     on:click={(e) => {
       e.preventDefault();
-      query = "";
+      $query = "";
     }}
   >
     <h1 class="logo">
@@ -24,10 +24,10 @@
     autocomplete="off"
     placeholder="Zoek door 300+ gemeenten..."
     class="SearchBar"
-    bind:value={query}
+    bind:value={$query}
   />
-  {#if query.length > 0}
-    <Results {query} />
+  {#if $query.length > 0}
+    <Results />
   {:else}
     <About />
   {/if}

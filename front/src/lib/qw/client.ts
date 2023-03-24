@@ -39,6 +39,15 @@ export class Client {
     }
   }
 
+  async delete(request: SearchRequest): Promise<Response> {
+    return fetch(`${this.apiRoot()}${request.indexId}/delete-tasks`, {
+      method: "POST",
+      body: JSON.stringify({
+        delete_query: request.query,
+      }),
+    });
+  }
+
   apiRoot(): string {
     return this._host + "/api/v1/";
   }

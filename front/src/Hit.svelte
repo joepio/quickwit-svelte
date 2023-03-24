@@ -2,15 +2,15 @@
   import type { Hit } from "./types";
 
   export let hit: Hit;
-  export let query: string;
 
+  import { client, query } from "./stores";
   let body = hit.body;
   let title = hit.body;
 
   $: {
     let bodyShort = hit.body.substring(0, 200);
-    if (query.length > 0) {
-      const regex = new RegExp(query, "gi");
+    if ($query.length > 0) {
+      const regex = new RegExp($query, "gi");
       title = hit.title?.replace(regex, (match) => `<mark>${match}</mark>`);
       body = bodyShort.replace(regex, (match) => `<mark>${match}</mark>`);
     } else {
@@ -18,6 +18,21 @@
       title = hit.title;
     }
   }
+
+  let children = [];
+
+  const getRelated = async () => {
+    let q = `questionId:${hit.questionId} AND type:answer`;
+    if (hit.type == "answer") {
+      q = `answerId:${hit.answerId} AND type:question`;
+    }
+    const res = await $client.search({
+      maxHits: 10,
+      query: q,
+      indexId: "stackoverflow",
+    });
+    children = res.hits;
+  };
 </script>
 
 <div class="Hit">
@@ -25,6 +40,12 @@
     <h2>{hit.title}</h2>
   {/if}
   <p>{@html body}</p>
+  <button on:click={getRelated}>related</button>
+  {#each children as child}
+    <div class="Hit">
+      <p>{@html child.body}</p>
+    </div>
+  {/each}
 </div>
 
 <style>
