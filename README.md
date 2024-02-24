@@ -1,6 +1,8 @@
-# Large Scale Tokenized Information Gatherer
+# Quickwit Search Svelte UI
 
-Search engine designed to process large amounts of PDF files and make them fully searchable.
+Front-end for [QuickWit](https://quickwit.io/) search engine made with Svelte + TS + Vite.
+
+_Note: very early, and probably not useful for anyone yet. Not actively maintained._
 
 ## Setup using S3 storage
 
@@ -16,6 +18,8 @@ cp template.secret-values.yaml secret-values.yaml
 helm repo add quickwit https://helm.quickwit.io
 helm repo update quickwit
 helm install lastig quickwit/quickwit -f helm-values.yaml -f secret-values.yaml
+helm repo add oauth2-proxy https://oauth2-proxy.github.io/manifests
+helm install proxy oauth2-proxy/oauth2-proxy -f proxy-values.yaml -f secret-values.yaml
 ```
 
 ## Run using docker (single node, locally)
